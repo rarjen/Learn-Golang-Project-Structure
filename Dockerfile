@@ -6,7 +6,7 @@ COPY . ./
 
 RUN go mod download
 
-RUN go build -o /template-backend-ulamm-go
+RUN go build -o /template-backend-ulamm-go cmd/*.go
 
 # Deploy
 
