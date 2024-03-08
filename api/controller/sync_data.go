@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -17,12 +16,9 @@ import (
 
 type SyncDataController interface {
 	GetDummyData() error
-	ScoringUsers(
-		ctx context.Context,
-	) (domain.SyncDataScoringParameterAPIResponse, error)
-	CheckDebiturID(
-		ginCtx *gin.Context,
-	) (domain.CheckDebiturIDResponse, error)
+	ScoringUsers(ctx *gin.Context)
+	CheckDebiturID(ginCtx *gin.Context)
+	GetUnitBranchCode(ginCtx *gin.Context)
 }
 
 type syncDataController struct {
@@ -40,8 +36,8 @@ func (sDC *syncDataController) GetDummyData() error {
 }
 
 func (sDC *syncDataController) ScoringUsers(
-	ctx context.Context,
-) (domain.SyncDataScoringParameterAPIResponse, error) {
+	ctx *gin.Context,
+) {
 
 	response := domain.SyncDataScoringParameterAPIResponse{
 		Status:      http.StatusBadRequest,
@@ -53,19 +49,19 @@ func (sDC *syncDataController) ScoringUsers(
 	if err != nil {
 		response.Status = http.StatusInternalServerError
 		response.Description = err.Error()
-		return response, err
+		ctx.JSON(response.Status, response)
+		return
 	}
 
 	response.Data = data
 	response.Status = http.StatusOK
 	response.Description = "success"
-
-	return response, nil
+	ctx.JSON(response.Status, response)
 }
 
 func (sDC *syncDataController) CheckDebiturID(
 	ginCtx *gin.Context,
-) (domain.CheckDebiturIDResponse, error) {
+) {
 	bodyReq, err := io.ReadAll(ginCtx.Request.Body)
 	response := domain.CheckDebiturIDResponse{
 		Status:      http.StatusBadRequest,
@@ -75,7 +71,8 @@ func (sDC *syncDataController) CheckDebiturID(
 	if err != nil {
 		response.Description = err.Error()
 		response.Status = http.StatusInternalServerError
-		return response, err
+		ginCtx.JSON(response.Status, response)
+		return
 	}
 	ginCtx.Request.Body = io.NopCloser(bytes.NewBuffer(bodyReq))
 
@@ -88,24 +85,72 @@ func (sDC *syncDataController) CheckDebiturID(
 				// binding:required -> can't be empty and can't be null
 				response.Description = fmt.Sprintf(constantvar.HTTP_MESSAGE_INVALID_INPUT, ve[0].Field())
 				response.Status = http.StatusBadRequest
-				return response, err
+				ginCtx.JSON(response.Status, response)
+				return
 			}
 		}
 		response.Description = err.Error()
 		response.Status = http.StatusInternalServerError
-		return response, err
+		ginCtx.JSON(response.Status, response)
+		return
 	}
 
 	result, err := sDC.syncDataUseCase.CheckDebiturIDUnit(ginCtx, checkDebiturIDRequest)
 	if err != nil {
 		response.Description = err.Error()
 		response.Status = http.StatusInternalServerError
-		return response, err
+		ginCtx.JSON(response.Status, response)
+		return
 	}
 
 	response.Description = constantvar.HTTP_RESPONSE_SUCCESS
 	response.Status = http.StatusOK
 	response.Data = result
 
-	return response, nil
+	ginCtx.JSON(response.Status, response)
+}
+
+func (sDC *syncDataController) GetUnitBranchCode(ginCtx *gin.Context) {
+	response := domain.GetUnitBranchCodeResponse{
+		Status:      http.StatusBadRequest,
+		Description: constantvar.HTTP_RESPONSE_FAILED_TO_FETCH,
+		Data:        nil,
+	}
+	bodyReq, err := io.ReadAll(ginCtx.Request.Body)
+	if err != nil {
+		ginCtx.JSON(response.Status, response)
+		return
+	}
+
+	ginCtx.Request.Body = io.NopCloser(bytes.NewBuffer(bodyReq))
+
+	var getUnitBranchCodeRequest domain.GetUnitBranchCodeRequest
+	if err := ginCtx.ShouldBindJSON(&getUnitBranchCodeRequest); err != nil {
+		var ve validator.ValidationErrors
+		if errors.As(err, &ve) {
+			if len(ve) > 0 {
+				response.Description = err.Error()
+				response.Status = http.StatusInternalServerError
+				ginCtx.JSON(response.Status, response)
+				return
+			}
+		}
+		response.Description = err.Error()
+		response.Status = http.StatusInternalServerError
+		ginCtx.JSON(response.Status, response)
+		return
+	}
+
+	data, err := sDC.syncDataUseCase.GetUnitBranchCode(ginCtx, getUnitBranchCodeRequest)
+	if err != nil {
+		response.Description = err.Error()
+		response.Status = http.StatusInternalServerError
+		ginCtx.JSON(response.Status, response)
+		return
+	}
+
+	response.Data = data
+	response.Description = constantvar.HTTP_RESPONSE_SUCCESS
+	response.Status = http.StatusOK
+	ginCtx.JSON(response.Status, response)
 }

@@ -26,6 +26,10 @@ type SyncDataRepository interface {
 		ctx context.Context,
 		stringConnection string,
 		nasabahData domain.CheckDebiturIDRequest) ([]entity.CheckDebiturIDEntity, error)
+	GetUnitBranchCode(
+		ctx context.Context,
+		requestData domain.GetUnitBranchCodeRequest,
+	) ([]entity.UnitBranchCodeEntity, error)
 }
 
 type syncDataRepository struct {
@@ -165,4 +169,38 @@ func (sDR *syncDataRepository) CheckDebiturIDUnit(
 	}
 
 	return result, nil
+}
+
+func (sDR *syncDataRepository) GetUnitBranchCode(
+	ctx context.Context,
+	requestData domain.GetUnitBranchCodeRequest,
+) ([]entity.UnitBranchCodeEntity, error) {
+	resultDB := make([]entity.UnitBranchCodeEntity, 0)
+
+	sqlQuery :=
+		`
+	exec dbo.act_KodeCabang_Select @Limit = ?
+	`
+
+	if requestData.Condition != "" {
+		sqlQuery +=
+			`
+		,
+		@Criteria = ?
+		`
+	}
+
+	if err := sDR.DB.Db.WithContext(ctx).Raw(
+		sqlQuery,
+		requestData.Limit,
+		requestData.Condition,
+	).Scan(&resultDB).Error; err != nil {
+		return nil, err
+	}
+
+	if len(resultDB) == 0 {
+		return nil, errors.New(constantvar.HTTP_RESPONSE_DATA_NOT_FOUND)
+	}
+
+	return resultDB, nil
 }

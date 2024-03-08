@@ -50,3 +50,11 @@ type DBUnitConnectionEntity struct {
 	BranchPassword       string `gorm:"column:PWD_CAB"`
 	RegionCode           string `gorm:"column:KODE_WILAYAH"`
 }
+
+// KodeCabangUnit / Unit branch code
+type UnitBranchCodeEntity struct {
+	BranchCode   string `gorm:"column:kode_cab"`
+	BranchName   string `gorm:"column:nama_cab"`
+	BranchIP     string `gorm:"column:IP_CAB"`
+	BranchDBName string `gorm:"column:DATABASE_CAB"`
+}

@@ -2,7 +2,6 @@ package route
 
 import (
 	"fmt"
-	"net/http"
 	"template-ulamm-backend-go/api/controller"
 	"template-ulamm-backend-go/api/middleware"
 	"template-ulamm-backend-go/utils/config"
@@ -36,15 +35,7 @@ func publicRoute(
 	controller controller.Controller,
 ) {
 	rgPublic := router.Group("/")
-	rgPublic.GET("/health", func(ctx *gin.Context) {
-		if err := controller.CommonController.PingDB(); err != nil {
-			ctx.AbortWithStatus(http.StatusInternalServerError)
-			return
-		}
-		ctx.JSON(http.StatusOK, gin.H{
-			"status": "UP",
-		})
-	})
+	rgPublic.GET("/health", controller.CommonController.PingDB)
 }
 
 func privateRoute(
@@ -56,20 +47,7 @@ func privateRoute(
 	if conf.STAGE == constantvar.STAGE_PRODUCTION {
 		rgPrivate.Use(middleware.ValidateMiddleware())
 	}
-	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_SYNC_DUMMY), func(ctx *gin.Context) {
-		res, err := controller.SyncDataController.ScoringUsers(ctx)
-		if err != nil {
-			ctx.JSON(res.Status, res)
-			return
-		}
-		ctx.JSON(http.StatusOK, res)
-	})
-	rgPrivate.POST(fmt.Sprintf("/%s", constantvar.ROUTE_CHECK_NASABAH_ID), func(ctx *gin.Context) {
-		res, err := controller.SyncDataController.CheckDebiturID(ctx)
-		if err != nil {
-			ctx.JSON(res.Status, res)
-			return
-		}
-		ctx.JSON(http.StatusOK, res)
-	})
+	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_SYNC_DUMMY), controller.SyncDataController.ScoringUsers)
+	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_CHECK_NASABAH_ID), controller.SyncDataController.CheckDebiturID)
+	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_UNIT_BRANCH_CODE), controller.SyncDataController.GetUnitBranchCode)
 }

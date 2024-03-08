@@ -40,8 +40,23 @@ type CheckDebiturIDResponse struct {
 }
 
 type CheckDebiturIDData struct {
-	NumberID  string `json:"numberID"`
+	NumberID  string  `json:"numberID"`
 	BirthDate *string `json:"birthDate"`
+}
+
+// GetUnitBranchCode (KodeCabangUnit)
+
+type GetUnitBranchCodeResponse struct {
+	Status      int                     `json:"status" example:"100"`
+	Description string                  `json:"description" example:"success"`
+	Data        []GetUnitBranchCodeData `json:"data"`
+}
+
+type GetUnitBranchCodeData struct {
+	BranchCode   string `json:"kodeCabang" example:"YR"`
+	BranchName   string `json:"namaCabang" example:"Unit Slipi"`
+	BranchIP     string `json:"ipCabang" example:"10.61.4.102"`
+	BranchDBName string `json:"namaDBCabang" example:"MMS-JKT-YR"`
 }
 
 /*

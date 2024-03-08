@@ -24,6 +24,10 @@ type SyncDataUseCase interface {
 		ginCtx *gin.Context,
 		nasabahData domain.CheckDebiturIDRequest,
 	) ([]domain.CheckDebiturIDData, error)
+	GetUnitBranchCode(
+		ginCtx *gin.Context,
+		requestData domain.GetUnitBranchCodeRequest,
+	) ([]domain.GetUnitBranchCodeData, error)
 }
 
 type syncDataUseCase struct {
@@ -119,11 +123,37 @@ func (sDUC *syncDataUseCase) CheckDebiturIDUnit(
 	for _, v := range resultDB {
 		resultData = append(resultData, domain.CheckDebiturIDData{
 			BirthDate: v.BirthDate,
-			NumberID: v.NumberID,
+			NumberID:  v.NumberID,
 		})
 	}
 
 	return resultData, nil
+}
+
+func (sDUC *syncDataUseCase) GetUnitBranchCode(
+	ginCtx *gin.Context,
+	requestData domain.GetUnitBranchCodeRequest,
+) ([]domain.GetUnitBranchCodeData, error) {
+	ctx, cancel := context.WithTimeout(ginCtx, 10*time.Second)
+	defer cancel()
+
+	responseData := make([]domain.GetUnitBranchCodeData, 0)
+
+	resultDB, err := sDUC.syncDataRepository.GetUnitBranchCode(ctx, requestData)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range resultDB {
+		responseData = append(responseData, domain.GetUnitBranchCodeData{
+			BranchCode:   v.BranchCode,
+			BranchName:   v.BranchName,
+			BranchIP:     v.BranchIP,
+			BranchDBName: v.BranchDBName,
+		})
+	}
+
+	return responseData, nil
 }
 
 func (aUC *syncDataUseCase) httpRequestToDecodeDBPassword(

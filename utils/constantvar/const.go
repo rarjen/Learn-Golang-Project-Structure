@@ -13,6 +13,7 @@ const (
 	ROUTE_SYNC_DATA        = "sync-data"
 	ROUTE_SYNC_DUMMY       = "sync-dummy"
 	ROUTE_CHECK_NASABAH_ID = "check-nasabah-id"
+	ROUTE_UNIT_BRANCH_CODE = "kode-unit-cabang"
 	ROUTE_API_AUTH         = "/marketline/validate"
 )
 

@@ -17,7 +17,7 @@ func main() {
 	}
 	c := newController(ds)
 	ginEngine := route.NewGinServer(c, config.C)
-	if err := ginEngine.Run("127.0.0.1:" + config.C.PORT); err != nil {
+	if err := ginEngine.Run(":" + config.C.PORT); err != nil {
 		log.Fatal(err)
 	}
 }

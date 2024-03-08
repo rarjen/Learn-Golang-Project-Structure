@@ -94,7 +94,7 @@ Project structure overview
     └───httprequest
 ```
 
--   `cmd` digunakan untuk menyimpan file yang berhubungan dengan command line seperti `merge.js`
+-   `cmd` digunakan untuk menyimpan file yang berhubungan dengan command line seperti `main.go`
 -   Adapter berisi `controller`, `repository`, dan `resolver`
     **Controller** merupakan layer terluar yang berfungsi untuk menerima request dan memanipulasi response
     **Repository** pada folder adapter digunakan sebagai layer yang langsung berhubungan dengan datasources (db, etc.)
