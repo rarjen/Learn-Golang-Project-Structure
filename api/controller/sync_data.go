@@ -16,7 +16,7 @@ import (
 
 type SyncDataController interface {
 	GetDummyData() error
-	ScoringUsers(ctx *gin.Context)
+	SyncDummy(ctx *gin.Context)
 	CheckDebiturID(ginCtx *gin.Context)
 	GetUnitBranchCode(ginCtx *gin.Context)
 }
@@ -35,7 +35,17 @@ func (sDC *syncDataController) GetDummyData() error {
 	return nil
 }
 
-func (sDC *syncDataController) ScoringUsers(
+// SyncDummy godoc
+//
+//	@Summary			Get scoring parameter
+//	@Description	Mendapatkan detail parameter untuk melakukan scoring
+//	@ID						sync-dummy
+//	@Tags					SyncDummy
+//	@Produce			json
+//	@Success			200	{object}	domain.SyncDataScoringParameterAPIResponse
+//	@Failure			500
+//	@Router				/sync-data/sync-dummy [get]
+func (sDC *syncDataController) SyncDummy(
 	ctx *gin.Context,
 ) {
 
@@ -45,7 +55,7 @@ func (sDC *syncDataController) ScoringUsers(
 		Data:        nil,
 	}
 
-	data, err := sDC.syncDataUseCase.ScoringUsers(ctx)
+	data, err := sDC.syncDataUseCase.SyncDummy(ctx)
 	if err != nil {
 		response.Status = http.StatusInternalServerError
 		response.Description = err.Error()
@@ -59,6 +69,17 @@ func (sDC *syncDataController) ScoringUsers(
 	ctx.JSON(response.Status, response)
 }
 
+// CheckDebiturID godoc
+//
+//	@Summary			Get debitur's detail by nasabahID
+//	@Description	Mendapatkan detail dari nasabah berdasarkan nasabahID
+//	@ID						check-nasabah-id
+//	@Tags					CheckDebiturID
+//	@Param 				request body domain.CheckDebiturIDRequest true "input JSON sebagai request body"
+//	@Produce			json
+//	@Success			200	{object}	domain.CheckDebiturIDResponse
+//	@Failure			500
+//	@Router				/sync-data/check-debitur-id [get]
 func (sDC *syncDataController) CheckDebiturID(
 	ginCtx *gin.Context,
 ) {
@@ -110,6 +131,17 @@ func (sDC *syncDataController) CheckDebiturID(
 	ginCtx.JSON(response.Status, response)
 }
 
+// KodeUnitCabang godoc
+//
+//	@Summary			Get debitur's detail by nasabahID
+//	@Description	Mendapatkan detail cabang berdasarkan limit dan kriteria
+//	@ID						kode-unit-cabang
+//	@Tags					KodeUnitCabang
+//	@Param 				request body domain.GetUnitBranchCodeRequest true "input JSON sebagai request body"
+//	@Produce			json
+//	@Success			200	{object}	domain.GetUnitBranchCodeResponse
+//	@Failure			500
+//	@Router				/sync-data/kode-unit-cabang [get]
 func (sDC *syncDataController) GetUnitBranchCode(ginCtx *gin.Context) {
 	response := domain.GetUnitBranchCodeResponse{
 		Status:      http.StatusBadRequest,

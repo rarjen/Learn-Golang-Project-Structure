@@ -12,7 +12,7 @@ const (
 const (
 	ROUTE_SYNC_DATA        = "sync-data"
 	ROUTE_SYNC_DUMMY       = "sync-dummy"
-	ROUTE_CHECK_NASABAH_ID = "check-nasabah-id"
+	ROUTE_CHECK_NASABAH_ID = "check-debitur-id"
 	ROUTE_UNIT_BRANCH_CODE = "kode-unit-cabang"
 	ROUTE_API_AUTH         = "/marketline/validate"
 )
@@ -44,6 +44,7 @@ const (
 	HTTP_RESPONSE_FAILED_TO_FETCH = "failed to fetch"
 	HTTP_RESPONSE_DATA_NOT_FOUND  = "data not found"
 	HTTP_RESPONSE_SUCCESS         = "success"
+	HTTP_RESPONSE_UP              = "UP"
 )
 
 // External URL

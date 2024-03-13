@@ -17,31 +17,31 @@ package domain
 
 */
 
-// ScoringUsers controller related
+// SyncDummy controller related
 
 type SyncDataScoringParameterAPIResponse struct {
-	Status      int                               `json:"status" example:"100"`
+	Status      int                               `json:"status" example:"200"`
 	Description string                            `json:"description" example:"success"`
 	Data        []SyncDataScoringParameterAPIData `json:"data"`
 }
 
 type SyncDataScoringParameterAPIData struct {
-	ID          int64    `json:"id" example:""`
-	BottomLimit *float64 `json:"batas_bawah" example:""`
-	UpperLimit  *float64 `json:"batas_atas" example:""`
-	Category    *string  `json:"kategory" example:""`
+	ID          int64    `json:"id" example:"7"`
+	BottomLimit *float64 `json:"batas_bawah" example:"36"`
+	UpperLimit  *float64 `json:"batas_atas" example:"40"`
+	Category    *string  `json:"kategory" example:"KUALITASDEBITUR"`
 }
 
 // CheckDebiturID related response
 type CheckDebiturIDResponse struct {
-	Status      int                  `json:"status" example:"100"`
+	Status      int                  `json:"status" example:"200"`
 	Description string               `json:"description" example:"success"`
 	Data        []CheckDebiturIDData `json:"data"`
 }
 
 type CheckDebiturIDData struct {
-	NumberID  string  `json:"numberID"`
-	BirthDate *string `json:"birthDate"`
+	NumberID  string  `json:"numberID" example:"3275066409790018"`
+	BirthDate *string `json:"birthDate" example:"1979-09-24"`
 }
 
 // GetUnitBranchCode (KodeCabangUnit)
@@ -66,4 +66,8 @@ type GetUnitBranchCodeData struct {
 // DecodeDBPassword to external API
 type DecodeDBPasswordResponse struct {
 	DecryptedString *string `json:"decryptedString"`
+}
+
+type PingDBResponse struct {
+	Status string `json:"status" example:"UP"`
 }

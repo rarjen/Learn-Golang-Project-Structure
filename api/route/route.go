@@ -8,6 +8,8 @@ import (
 	"template-ulamm-backend-go/utils/constantvar"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 /*
@@ -36,6 +38,7 @@ func publicRoute(
 ) {
 	rgPublic := router.Group("/")
 	rgPublic.GET("/health", controller.CommonController.PingDB)
+	rgPublic.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
 
 func privateRoute(
@@ -47,7 +50,7 @@ func privateRoute(
 	if conf.STAGE == constantvar.STAGE_PRODUCTION {
 		rgPrivate.Use(middleware.ValidateMiddleware())
 	}
-	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_SYNC_DUMMY), controller.SyncDataController.ScoringUsers)
+	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_SYNC_DUMMY), controller.SyncDataController.SyncDummy)
 	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_CHECK_NASABAH_ID), controller.SyncDataController.CheckDebiturID)
 	rgPrivate.GET(fmt.Sprintf("/%s", constantvar.ROUTE_UNIT_BRANCH_CODE), controller.SyncDataController.GetUnitBranchCode)
 }

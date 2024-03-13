@@ -17,7 +17,7 @@ import (
 
 type SyncDataUseCase interface {
 	GetDummyData() error
-	ScoringUsers(
+	SyncDummy(
 		c context.Context,
 	) ([]domain.SyncDataScoringParameterAPIData, error)
 	CheckDebiturIDUnit(
@@ -49,7 +49,7 @@ func (sDUC *syncDataUseCase) GetDummyData() error {
 	return nil
 }
 
-func (sDUC *syncDataUseCase) ScoringUsers(
+func (sDUC *syncDataUseCase) SyncDummy(
 	c context.Context,
 ) ([]domain.SyncDataScoringParameterAPIData, error) {
 	// create new context to handle timeout
@@ -59,7 +59,7 @@ func (sDUC *syncDataUseCase) ScoringUsers(
 
 	response := make([]domain.SyncDataScoringParameterAPIData, 0)
 
-	dataUsers, err := sDUC.syncDataRepository.ScoringUsers(ctx)
+	dataUsers, err := sDUC.syncDataRepository.SyncDummy(ctx)
 	if err != nil {
 		return nil, err
 	}

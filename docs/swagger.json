@@ -1,0 +1,290 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Template untuk inisiasi seluruh backend project pada ULaMM menggunakan bahasa pemrograman Go",
+        "title": "Template-Backend-ULaMM-Go",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:80",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "Melakukan ping ke database untuk memeriksa kesehatan aplikasi dan database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pingdb"
+                ],
+                "summary": "Ping the DB",
+                "operationId": "get-pingdb",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.PingDBResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/sync-data/check-debitur-id": {
+            "get": {
+                "description": "Mendapatkan detail dari nasabah berdasarkan nasabahID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CheckDebiturID"
+                ],
+                "summary": "Get debitur's detail by nasabahID",
+                "operationId": "check-nasabah-id",
+                "parameters": [
+                    {
+                        "description": "input JSON sebagai request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CheckDebiturIDRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.CheckDebiturIDResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/sync-data/kode-unit-cabang": {
+            "get": {
+                "description": "Mendapatkan detail cabang berdasarkan limit dan kriteria",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "KodeUnitCabang"
+                ],
+                "summary": "Get debitur's detail by nasabahID",
+                "operationId": "kode-unit-cabang",
+                "parameters": [
+                    {
+                        "description": "input JSON sebagai request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.GetUnitBranchCodeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.GetUnitBranchCodeResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/sync-data/sync-dummy": {
+            "get": {
+                "description": "Mendapatkan detail parameter untuk melakukan scoring",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SyncDummy"
+                ],
+                "summary": "Get scoring parameter",
+                "operationId": "sync-dummy",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SyncDataScoringParameterAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.CheckDebiturIDData": {
+            "type": "object",
+            "properties": {
+                "birthDate": {
+                    "type": "string",
+                    "example": "1979-09-24"
+                },
+                "numberID": {
+                    "type": "string",
+                    "example": "3275066409790018"
+                }
+            }
+        },
+        "domain.CheckDebiturIDRequest": {
+            "type": "object",
+            "required": [
+                "nasabahID",
+                "unitCode"
+            ],
+            "properties": {
+                "nasabahID": {
+                    "type": "string",
+                    "example": "HC.000251"
+                },
+                "unitCode": {
+                    "type": "string",
+                    "example": "HC"
+                }
+            }
+        },
+        "domain.CheckDebiturIDResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.CheckDebiturIDData"
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "example": "success"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "domain.GetUnitBranchCodeData": {
+            "type": "object",
+            "properties": {
+                "ipCabang": {
+                    "type": "string",
+                    "example": "10.61.4.102"
+                },
+                "kodeCabang": {
+                    "type": "string",
+                    "example": "YR"
+                },
+                "namaCabang": {
+                    "type": "string",
+                    "example": "Unit Slipi"
+                },
+                "namaDBCabang": {
+                    "type": "string",
+                    "example": "MMS-JKT-YR"
+                }
+            }
+        },
+        "domain.GetUnitBranchCodeRequest": {
+            "type": "object",
+            "required": [
+                "limit"
+            ],
+            "properties": {
+                "condition": {
+                    "type": "string",
+                    "example": "kode_cab like '%Y%'"
+                },
+                "limit": {
+                    "type": "integer",
+                    "example": 10
+                }
+            }
+        },
+        "domain.GetUnitBranchCodeResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.GetUnitBranchCodeData"
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "example": "success"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "domain.PingDBResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "UP"
+                }
+            }
+        },
+        "domain.SyncDataScoringParameterAPIData": {
+            "type": "object",
+            "properties": {
+                "batas_atas": {
+                    "type": "number",
+                    "example": 40
+                },
+                "batas_bawah": {
+                    "type": "number",
+                    "example": 36
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 7
+                },
+                "kategory": {
+                    "type": "string",
+                    "example": "KUALITASDEBITUR"
+                }
+            }
+        },
+        "domain.SyncDataScoringParameterAPIResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.SyncDataScoringParameterAPIData"
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "example": "success"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        }
+    }
+}

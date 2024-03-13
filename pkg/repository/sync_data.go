@@ -19,7 +19,7 @@ type SyncDataRepository interface {
 	SyncDataGetConnectionString(
 		kodeUnit string,
 	) (*entity.DBUnitConnectionEntity, error)
-	ScoringUsers(
+	SyncDummy(
 		ctx context.Context,
 	) ([]entity.SyncDataScoringParameterAPIEntity, error)
 	CheckDebiturIDUnit(
@@ -88,7 +88,7 @@ func (sDR *syncDataRepository) GetDummyData() error {
 	return nil
 }
 
-func (sDR *syncDataRepository) ScoringUsers(
+func (sDR *syncDataRepository) SyncDummy(
 	ctx context.Context,
 ) ([]entity.SyncDataScoringParameterAPIEntity, error) {
 	userEntities := make([]entity.SyncDataScoringParameterAPIEntity, 0)
@@ -154,7 +154,7 @@ func (sDR *syncDataRepository) CheckDebiturIDUnit(
 		}
 
 		if value, ok := v["tgllahir"]; ok {
-			if value == nil {
+			if value != nil {
 				tmpNullableTglLahir := v["tgllahir"].(time.Time)
 				tmpStringTglLahir := utils.TimeToSQLDateConverter(tmpNullableTglLahir)
 				tmpData.BirthDate = &tmpStringTglLahir

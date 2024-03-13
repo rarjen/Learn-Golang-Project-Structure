@@ -2,7 +2,9 @@ package controller
 
 import (
 	"net/http"
+	"template-ulamm-backend-go/domain"
 	"template-ulamm-backend-go/pkg/datasource"
+	"template-ulamm-backend-go/utils/constantvar"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,6 +23,16 @@ func NewCommonController(ds *datasource.Datasource) CommonController {
 	}
 }
 
+// Health godoc
+//
+//	@Summary			Ping the DB
+//	@Description	Melakukan ping ke database untuk memeriksa kesehatan aplikasi dan database
+//	@ID						get-pingdb
+//	@Tags					pingdb
+//	@Produce			json
+//	@Success			200	{object} domain.PingDBResponse
+//	@Failure			500
+//	@Router				/health [get]
 func (cC *commonController) PingDB(
 	ginCtx *gin.Context,
 ) {
@@ -36,7 +48,9 @@ func (cC *commonController) PingDB(
 			res.Status = err.Error()
 			ginCtx.JSON(http.StatusInternalServerError, res)
 		} else {
-			ginCtx.JSON(http.StatusOK, res)
+			ginCtx.JSON(http.StatusOK, domain.PingDBResponse{
+				Status: constantvar.HTTP_RESPONSE_UP,
+			})
 		}
 	} else {
 		res.Status = "failed to ping"
