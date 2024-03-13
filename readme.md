@@ -51,7 +51,10 @@
 
 ## About The Project
 
--   Proyek ini merupakan
+-   Proyek ini merupakan template untuk project backend yang digunakan oleh tim ULaMM dengan menggunakan bahasa premrograman Go
+-   Terdapat dua branch utama pada repository ini, yaitu:
+    - master : branch utama dengan berbagai contoh use case (penggunaan lebih dari dua database, HTTP request, etc.)
+    - blank : branch yang bisa kalian gunakan untuk memulai project baru. Silahkan rename module dan beberapa resources sesuai kebutuhan
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -67,51 +70,47 @@
 Project structure overview
 
 ```sh
-├───cmd
-├───graph
-│   ├───generated
-│   └───schema
-├───kubernetes
-├───pkg
-│   ├───adapter
-│   │   ├───controller
-│   │   ├───repository
-│   │   └───resolver
-│   ├───constantvar
-│   │   └───externalurl
-│   ├───entity
-│   │   └───model
-│   ├───infrastructure
-│   │   ├───datasource
-│   │   ├───graphql
-│   │   └───router
-│   ├───registry
-│   └───usecase
-├───test
-├───tools
-└───utils
-    ├───config
-    └───httprequest
+|-- api
+|   |-- controller
+|   |-- middleware
+|   |-- registry
+|   `-- route
+|-- docs
+|-- domain
+|   `-- entity
+|-- pkg
+|   |-- datasource
+|   |-- repository
+|   `-- usecase
+|-- test
+|-- tools
+|-- tzinit
+`-- utils
+    |-- config
+    |-- constantvar
+    `-- httputility
 ```
 
--   Adapter berisi `controller`, `repository`, dan `resolver`
+-   **API** berisi `controller`,`middleware`,`registry`,`route`
     **Controller** merupakan layer terluar yang berfungsi untuk menerima request dan memanipulasi response
-    **Repository** pada folder adapter digunakan sebagai layer yang langsung berhubungan dengan datasources (db, etc.)
-    **Resolver** digunakan untuk menyimpan file resolver hasil generate resolver `gqlgen`
-    -   `constantvar` berisikan variabel konstanta
-    -   `entity` merupakan folder untuk menyimpan struct-struct yang berhubungan dengan model
--   `utils` berisikan fungsi-fungsi bantuan
+    **Middleware** berisikan middleware
+    **Registry** digunakan untuk instantiate objek (dependency injection)
+    **Route** berisikan daftar seluruh endpoint
+-   **docs** berisikan hasil generate dari swagger
+-   **Domain** berisikan seluruh class/struct seperti entity, request, dan response untuk kebutuhan http request.
+-   **pkg** berisikan layer usecase dan repository
+    - **usecase** digunakan untuk mengisi logika bisnis pada request yang berasal dari controller
+    - **repository** layer untuk menarik data yang berasal dari database, external API, dll.
+    - **datasource** sebagai sumber data
+-   **utils** berisikan fungsi-fungsi bantuan
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Go-REST-API Architecture
 
-![Go-REST-API Architecture](docs/go-rest-api-architecture.png)
+![Go-REST-API Architecture](docs/go-rest-api-architecture.webp)
 
 Go-REST-API consist of:
-
-`GraphqlResolver`\
- For Graphql Mutation and Query resolvers
 
 `Controller`\
 For handling request from Graphql Resolvers. Make sure Resolver doesn't have any logic to convert data.
@@ -120,7 +119,7 @@ For handling request from Graphql Resolvers. Make sure Resolver doesn't have any
 For app logic handling. Use usecase for logic handling (remapping data, etc..)
 
 `Repository`\
-For data storing and fetching from server database
+For data storing and fetching from datasource
 
 <!-- GETTING STARTED -->
 
@@ -142,20 +141,17 @@ Berikut dependency yang dibutuhkan serta cara instalasi dan deployment dari proy
     ```sh
     go get github.com/spf13/viper
     ```
+-   swaggo
+    ``` sh
+    go install github.com/swaggo/swag/cmd/swag@latest
+    ```    
 -   docker
 -   make
 
 ### Installation
 
-1. Update schema pada Apollo studio dengan command
-    ```sh
-    make update-schema
-    ```
-2. Build image Docker dengan command
-    ```sh
-    make build-image
-    ```
-3. Gunakan image terbaru pada deployment
+1. go mod tidy
+2. go run .
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
