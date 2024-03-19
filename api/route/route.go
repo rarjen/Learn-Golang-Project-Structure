@@ -7,6 +7,7 @@ import (
 	"template-ulamm-backend-go/utils/config"
 	"template-ulamm-backend-go/utils/constantvar"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
@@ -21,8 +22,15 @@ func NewGinServer(
 	controller controller.Controller,
 	conf config.Config,
 ) *gin.Engine {
+	if conf.STAGE == constantvar.STAGE_PRODUCTION {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
 	ginEngine := gin.Default()
+	ginEngine.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowHeaders:    []string{"Authorization", "Content-Type"},
+	}))
 
 	// All Public APIs
 	publicRoute(ginEngine, controller)
