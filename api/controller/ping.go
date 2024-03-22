@@ -40,7 +40,7 @@ func (cC *commonController) PingDB(
 	res := struct {
 		Status string `json:"status"`
 	}{
-		Status: "UP",
+		Status: "UP - test",
 	}
 
 	if pinger, ok := cC.ds.Db.ConnPool.(interface{ Ping() error }); ok {
