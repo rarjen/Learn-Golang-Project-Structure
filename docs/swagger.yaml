@@ -1,110 +1,11 @@
 definitions:
-  domain.CheckDebiturIDData:
+  response.PingResponse:
     properties:
-      birthDate:
-        example: "1979-09-24"
+      current_date:
         type: string
-      numberID:
-        example: "3275066409790018"
-        type: string
-    type: object
-  domain.CheckDebiturIDRequest:
-    properties:
-      nasabahID:
-        example: HC.000251
-        type: string
-      unitCode:
-        example: HC
-        type: string
-    required:
-    - nasabahID
-    - unitCode
-    type: object
-  domain.CheckDebiturIDResponse:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.CheckDebiturIDData'
-        type: array
-      description:
-        example: success
-        type: string
+      message: {}
       status:
-        example: 200
-        type: integer
-    type: object
-  domain.GetUnitBranchCodeData:
-    properties:
-      ipCabang:
-        example: 10.61.4.102
         type: string
-      kodeCabang:
-        example: YR
-        type: string
-      namaCabang:
-        example: Unit Slipi
-        type: string
-      namaDBCabang:
-        example: MMS-JKT-YR
-        type: string
-    type: object
-  domain.GetUnitBranchCodeRequest:
-    properties:
-      condition:
-        example: kode_cab like '%Y%'
-        type: string
-      limit:
-        example: 10
-        type: integer
-    required:
-    - limit
-    type: object
-  domain.GetUnitBranchCodeResponse:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.GetUnitBranchCodeData'
-        type: array
-      description:
-        example: success
-        type: string
-      status:
-        example: 100
-        type: integer
-    type: object
-  domain.PingDBResponse:
-    properties:
-      status:
-        example: UP
-        type: string
-    type: object
-  domain.SyncDataScoringParameterAPIData:
-    properties:
-      batas_atas:
-        example: 40
-        type: number
-      batas_bawah:
-        example: 36
-        type: number
-      id:
-        example: 7
-        type: integer
-      kategory:
-        example: KUALITASDEBITUR
-        type: string
-    type: object
-  domain.SyncDataScoringParameterAPIResponse:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.SyncDataScoringParameterAPIData'
-        type: array
-      description:
-        example: success
-        type: string
-      status:
-        example: 200
-        type: integer
     type: object
 host: 127.0.0.1:80
 info:
@@ -121,79 +22,17 @@ paths:
     get:
       description: Melakukan ping ke database untuk memeriksa kesehatan aplikasi dan
         database
-      operationId: get-pingdb
+      operationId: get-ping
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.PingDBResponse'
+            $ref: '#/definitions/response.PingResponse'
         "500":
           description: Internal Server Error
-      summary: Ping the DB
+      summary: Ping
       tags:
-      - pingdb
-  /sync-data/check-debitur-id:
-    get:
-      description: Mendapatkan detail dari nasabah berdasarkan nasabahID
-      operationId: check-nasabah-id
-      parameters:
-      - description: input JSON sebagai request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/domain.CheckDebiturIDRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.CheckDebiturIDResponse'
-        "500":
-          description: Internal Server Error
-      summary: Get debitur's detail by nasabahID
-      tags:
-      - CheckDebiturID
-  /sync-data/kode-unit-cabang:
-    get:
-      description: Mendapatkan detail cabang berdasarkan limit dan kriteria
-      operationId: kode-unit-cabang
-      parameters:
-      - description: input JSON sebagai request body
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/domain.GetUnitBranchCodeRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.GetUnitBranchCodeResponse'
-        "500":
-          description: Internal Server Error
-      summary: Get debitur's detail by nasabahID
-      tags:
-      - KodeUnitCabang
-  /sync-data/sync-dummy:
-    get:
-      description: Mendapatkan detail parameter untuk melakukan scoring
-      operationId: sync-dummy
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.SyncDataScoringParameterAPIResponse'
-        "500":
-          description: Internal Server Error
-      summary: Get scoring parameter
-      tags:
-      - SyncDummy
+      - ping
 swagger: "2.0"
