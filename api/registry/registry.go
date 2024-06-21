@@ -5,23 +5,22 @@ import (
 	"template-ulamm-backend-go/pkg/datasource"
 )
 
-type Registry interface{
+type Registry interface {
 	NewController() controller.Controller
 }
 
 type registry struct {
-	ds *datasource.Datasource
+	datasource *datasource.Datasource
 }
 
-func NewRegistry(ds *datasource.Datasource) Registry {
+func NewRegistry(datasource *datasource.Datasource) Registry {
 	return &registry{
-		ds: ds,
+		datasource: datasource,
 	}
 }
 
 func (r *registry) NewController() controller.Controller {
 	return controller.Controller{
 		CommonController: r.NewCommonController(),
-		SyncDataController: r.NewSyncDataController(),
 	}
 }

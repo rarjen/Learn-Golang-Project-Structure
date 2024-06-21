@@ -1,22 +1,23 @@
-FROM golang:1.21-alpine AS build
+FROM golang:1.22-alpine AS build
 
 WORKDIR /app
 
 COPY . ./
 
-RUN go mod download
+RUN GOPROXY="https://goproxy.io" go mod download
 
 RUN go build -o /template-backend-ulamm-go
 
 # Deploy
-
 FROM alpine:latest
 
 RUN apk add --no-cache tzdata
 ENV TZ=Asia/Jakarta
 
-WORKDIR /app  
+WORKDIR /app
 ADD .env .env
+ADD locales locales
+
 
 COPY --from=build /template-backend-ulamm-go /template-backend-ulamm-go
 

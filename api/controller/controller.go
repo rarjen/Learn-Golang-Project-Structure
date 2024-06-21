@@ -1,6 +1,11 @@
 package controller
 
+import "time"
+
+const (
+	TIMEOUT = time.Second * 15
+)
+
 type Controller struct {
-	CommonController   interface{ CommonController }
-	SyncDataController interface{ SyncDataController }
+	CommonController interface{ CommonController }
 }
