@@ -5,8 +5,11 @@ import "fmt"
 var (
 	ERR_PING = newError("err_ping")
 
-	//CREATE USER
-	ERR_CREATE_USER = newError("err_create_user")
+	//USER
+	ERR_CREATE_USER    = newError("err_create_user")
+	ERR_UPDATE_USER    = newError("err_update_user")
+	ERR_USER_NOT_FOUND = newError("err_user_not_found")
+	ERR_DELETE_USER    = newError("err_delete_user")
 )
 
 type Error struct {
