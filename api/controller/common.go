@@ -44,3 +44,7 @@ func (controller *commonController) Ping(ginCtx *gin.Context) {
 
 	response.SuccessResponse(ginCtx, "Ping Berhasil", resp)
 }
+
+func (controller *commonController) GetDataTest(ginCtx *gin.Context) {
+
+}

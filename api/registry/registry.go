@@ -3,6 +3,8 @@ package registry
 import (
 	"template-ulamm-backend-go/api/controller"
 	"template-ulamm-backend-go/pkg/datasource"
+	"template-ulamm-backend-go/pkg/repository"
+	"template-ulamm-backend-go/pkg/usecase"
 )
 
 type Registry interface {
@@ -21,6 +23,20 @@ func NewRegistry(datasource *datasource.Datasource) Registry {
 
 func (r *registry) NewController() controller.Controller {
 	return controller.Controller{
-		CommonController: r.NewCommonController(),
+		CommonController: controller.NewCommonController(
+			usecase.NewCommonUsecase(
+				repository.NewCommonRepository(r.datasource),
+			),
+		),
+		UserController: controller.NewUserController(
+			usecase.NewUserUsecase(
+				repository.NewUserRepository(r.datasource),
+			),
+		),
+		CityController: controller.NewCityController(
+			usecase.NewCityUsecase(
+				repository.NewCityRepository(r.datasource),
+			),
+		),
 	}
 }

@@ -2,6 +2,7 @@ package request
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,6 +42,17 @@ type CreatePipelineRequest struct {
 	ProductPlan         int     `json:"product_plan" validate:"required"`
 	LoanPlan            float64 `json:"loan_plan" validate:"required"`
 	PhoneNumber         string  `json:"phone_number" validate:"required"`
+}
+
+type CreateUserRequest struct {
+	IDEmployee   string    `json:"id_employee" validate:"required"`
+	Username     string    `json:"username" validate:"required"`
+	Name         string    `json:"name" validate:"required"`
+	IsActive     int       `json:"is_active" validate:"required"`
+	CreatedBy    string    `json:"created_by" validate:"required"`
+	CreatedTime  time.Time `json:"created_time"`
+	ModifiedBy   string    `json:"modified_by"`
+	ModifiedTime time.Time `json:"modified_time"`
 }
 
 type CreateCommunityPipelineRequest struct {

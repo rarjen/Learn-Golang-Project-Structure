@@ -8,4 +8,6 @@ const (
 
 type Controller struct {
 	CommonController interface{ CommonController }
+	UserController   interface{ UserController }
+	CityController   interface{ CityController }
 }

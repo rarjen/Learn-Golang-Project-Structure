@@ -4,6 +4,9 @@ import "fmt"
 
 var (
 	ERR_PING = newError("err_ping")
+
+	//CREATE USER
+	ERR_CREATE_USER = newError("err_create_user")
 )
 
 type Error struct {

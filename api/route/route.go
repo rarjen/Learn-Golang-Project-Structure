@@ -25,6 +25,12 @@ func NewServer(controller controller.Controller) *gin.Engine {
 	// Route Health
 	routeHealth(router, controller)
 
+	// Route User
+	routeUser(router, controller)
+
+	// Route City
+	routeCity(router, controller)
+
 	// Route Swagger
 	routeSwagger(router)
 
@@ -33,6 +39,16 @@ func NewServer(controller controller.Controller) *gin.Engine {
 
 func routeHealth(router *gin.Engine, controller controller.Controller) {
 	router.GET("/health", controller.CommonController.Ping)
+}
+
+func routeUser(router *gin.Engine, controller controller.Controller) {
+	router.GET("/users", controller.UserController.GetUser)
+	// router.GET("/users/:id", controller.UserController.GetOneUser)
+	router.POST("/users", controller.UserController.CreateUser)
+}
+
+func routeCity(router *gin.Engine, controller controller.Controller) {
+	router.GET("/cities", controller.CityController.GetCity)
 }
 
 func routeSwagger(router *gin.Engine) {
