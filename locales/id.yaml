@@ -1,3 +1,6 @@
 # PING
 err_ping_title: Mengambil Data
 err_ping_message: Gagal mengambil data pipeline di dalam database
+
+err_user_not_found_title: Data Tidak Ditemukan
+err_user_not_found_message: Data user tidak ditemukan
