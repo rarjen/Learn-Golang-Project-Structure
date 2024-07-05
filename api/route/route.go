@@ -42,9 +42,11 @@ func routeHealth(router *gin.Engine, controller controller.Controller) {
 }
 
 func routeUser(router *gin.Engine, controller controller.Controller) {
-	router.GET("/users", controller.UserController.GetUser)
-	// router.GET("/users/:id", controller.UserController.GetOneUser)
+	// router.GET("/users", controller.UserController.GetUser)
+	router.GET("/users/:id", controller.UserController.GetOneUser)
 	router.POST("/users", controller.UserController.CreateUser)
+	router.PUT("/users/:id_employee", controller.UserController.UpdateUserByEmployeeIdController)
+	router.DELETE("/users/:id_employee", controller.UserController.DeleteUserByEmployeeIdController)
 }
 
 func routeCity(router *gin.Engine, controller controller.Controller) {
