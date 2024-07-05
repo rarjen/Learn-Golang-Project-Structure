@@ -30,6 +30,16 @@ type CreatedUserResponse struct {
 	ModifiedBy string `json:"modified_by"`
 }
 
+type UpdatedUserResponse struct {
+	ID         string `json:"id"`
+	IDEmployee string `json:"id_employee"`
+	Username   string `json:"username"`
+	Name       string `json:"name"`
+	IsActive   int    `json:"is_active"`
+	CreatedBy  string `json:"created_by"`
+	ModifiedBy string `json:"modified_by"`
+}
+
 func SuccessResponse(ctx *gin.Context, message string, data interface{}) {
 	ctx.JSON(http.StatusOK, Response{
 		Message: &message,
