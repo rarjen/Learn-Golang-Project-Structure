@@ -55,6 +55,21 @@ type CreateUserRequest struct {
 	ModifiedTime time.Time `json:"modified_time"`
 }
 
+type GetIdUserRequest struct {
+	IDEmployee string `uri:"id_employee" binding:"required"`
+}
+
+type UpdateUserRequest struct {
+	IDEmployee   string    `json:"id_employee"`
+	Username     string    `json:"username"`
+	Name         string    `json:"name"`
+	IsActive     int       `json:"is_active"`
+	CreatedBy    string    `json:"created_by"`
+	CreatedTime  time.Time `json:"created_time"`
+	ModifiedBy   string    `json:"modified_by"`
+	ModifiedTime time.Time `json:"modified_time"`
+}
+
 type CreateCommunityPipelineRequest struct {
 	PipelineIds       []int64 `json:"id_pipelines" validate:"required"`
 	ChiefId           int64   `json:"chief_id" validate:"required"`
