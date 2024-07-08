@@ -31,6 +31,9 @@ func NewServer(controller controller.Controller) *gin.Engine {
 	// Route City
 	routeCity(router, controller)
 
+	// Route Program
+	routeProgram(router, controller)
+
 	// Route Swagger
 	routeSwagger(router)
 
@@ -47,6 +50,15 @@ func routeUser(router *gin.Engine, controller controller.Controller) {
 	router.POST("/users", controller.UserController.CreateUser)
 	router.PUT("/users/:id_employee", controller.UserController.UpdateUserByEmployeeIdController)
 	router.DELETE("/users/:id_employee", controller.UserController.DeleteUserByEmployeeIdController)
+}
+
+func routeProgram(router *gin.Engine, controller controller.Controller) {
+
+	program := router.Group("/programs")
+	{
+		program.POST("/", controller.ProgramController.CreateProgram)
+	}
+
 }
 
 func routeCity(router *gin.Engine, controller controller.Controller) {
