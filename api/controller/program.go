@@ -13,6 +13,7 @@ import (
 
 type ProgramController interface {
 	CreateProgram(ginCtx *gin.Context)
+	GetAllPrograms(ginCtx *gin.Context)
 }
 
 type programController struct {
@@ -43,4 +44,16 @@ func (controller *programController) CreateProgram(ginCtx *gin.Context) {
 		return
 	}
 	response.SuccessResponse(ginCtx, "success create program", resp)
+}
+
+func (controller *programController) GetAllPrograms(ginCtx *gin.Context) {
+	ctx, cancel := context.WithTimeout(ginCtx, TIMEOUT)
+	defer cancel()
+
+	resp, err := controller.ProgramUsecase.GetAllProgramsUsecase(ctx)
+	if err != nil {
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+	response.SuccessResponse(ginCtx, "success get all programs", resp)
 }
