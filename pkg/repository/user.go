@@ -53,14 +53,3 @@ func (repo *userRepository) DeleteByEmployeeIdRepo(ctx context.Context, id strin
 
 	return nil
 }
-
-// func (cr *userRepository) FindAll(ctx context.Context) ([]entity.User, error) {
-// 	var users []entity.User
-
-// 	err := cr.Datasource.GormDB.WithContext(ctx).Find(&users).Error
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return users, nil
-// }
