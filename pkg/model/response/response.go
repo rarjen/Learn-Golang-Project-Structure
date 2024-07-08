@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"template-ulamm-backend-go/pkg/errs"
 	"template-ulamm-backend-go/pkg/model/request"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,15 @@ type CreatedUserResponse struct {
 	IsActive   int    `json:"is_active"`
 	CreatedBy  string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`
+}
+
+type CreatedProgramResponse struct {
+	IDProgram   int       `json:"id"`
+	ProgramName string    `json:"program_name"`
+	IsActive    int       `json:"is_active"`
+	CreatedBy   string    `json:"created_by"`
+	ModifiedBy  string    `json:"modified_by"`
+	CreatedTime time.Time `json:"created_time"`
 }
 
 type UpdatedUserResponse struct {
