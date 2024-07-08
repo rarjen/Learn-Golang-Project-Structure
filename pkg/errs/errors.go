@@ -10,6 +10,9 @@ var (
 	ERR_UPDATE_USER    = newError("err_update_user")
 	ERR_USER_NOT_FOUND = newError("err_user_not_found")
 	ERR_DELETE_USER    = newError("err_delete_user")
+
+	//PROGRAM
+	ERR_CREATE_PROGRAM = newError("err_create_program")
 )
 
 type Error struct {
