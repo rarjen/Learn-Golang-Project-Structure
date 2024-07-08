@@ -7,7 +7,8 @@ const (
 )
 
 type Controller struct {
-	CommonController interface{ CommonController }
-	UserController   interface{ UserController }
-	CityController   interface{ CityController }
+	CommonController  interface{ CommonController }
+	UserController    interface{ UserController }
+	CityController    interface{ CityController }
+	ProgramController interface{ ProgramController }
 }
