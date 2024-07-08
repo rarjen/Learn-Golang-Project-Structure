@@ -57,6 +57,7 @@ func routeProgram(router *gin.Engine, controller controller.Controller) {
 	program := router.Group("/programs")
 	{
 		program.POST("/", controller.ProgramController.CreateProgram)
+		program.GET("/", controller.ProgramController.GetAllPrograms)
 	}
 
 }
