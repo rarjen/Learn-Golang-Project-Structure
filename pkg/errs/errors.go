@@ -12,7 +12,8 @@ var (
 	ERR_DELETE_USER    = newError("err_delete_user")
 
 	//PROGRAM
-	ERR_CREATE_PROGRAM = newError("err_create_program")
+	ERR_CREATE_PROGRAM   = newError("err_create_program")
+	ERR_GET_ALL_PROGRAMS = newError("err_get_all_programs")
 )
 
 type Error struct {
