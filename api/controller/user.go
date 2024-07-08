@@ -98,9 +98,7 @@ func (uc *userController) CreateUser(ginCtx *gin.Context) {
 		response.FailedResponse(ginCtx, err)
 		return
 	}
-
 	response.SuccessResponse(ginCtx, "success create user", resp)
-
 }
 
 // func (uc *userController) GetUser(ginCtx *gin.Context) {
