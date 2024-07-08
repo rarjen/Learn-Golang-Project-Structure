@@ -15,6 +15,7 @@ import (
 
 type ProgramUsecase interface {
 	CreateProgramUseCase(ctx context.Context, req request.CreateProgramRequest) (*response.CreatedProgramResponse, error)
+	GetAllProgramsUsecase(ctx context.Context) ([]response.GetAllProgramsResponse, error)
 }
 
 type programUsecase struct {
@@ -46,5 +47,29 @@ func (u *programUsecase) CreateProgramUseCase(ctx context.Context, req request.C
 		CreatedBy:   newProgram.CreatedBy,
 		CreatedTime: newProgram.CreatedTime,
 	}, nil
+
+}
+
+func (u *programUsecase) GetAllProgramsUsecase(ctx context.Context) ([]response.GetAllProgramsResponse, error) {
+
+	programs, err := u.repository.GetAllProgramsRepo(ctx)
+
+	if err != nil {
+		utils.GetLogger().Error("error get all programs", zap.Error(err))
+		return nil, errs.ERR_GET_ALL_PROGRAMS
+	}
+
+	responses := make([]response.GetAllProgramsResponse, 0, len(programs))
+	for _, program := range programs {
+		responses = append(responses, response.GetAllProgramsResponse{
+			IDProgram:   program.IDProgram,
+			ProgramName: program.ProgramName,
+			IsActive:    program.IsActive,
+			CreatedBy:   program.CreatedBy,
+			ModifiedBy:  program.ModifiedBy,
+		})
+	}
+
+	return responses, nil
 
 }
