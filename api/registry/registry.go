@@ -38,5 +38,10 @@ func (r *registry) NewController() controller.Controller {
 				repository.NewCityRepository(r.datasource),
 			),
 		),
+		ProgramController: controller.NewProgramController(
+			usecase.NewProgramUsecase(
+				repository.NewProgramRepository(r.datasource),
+			),
+		),
 	}
 }
