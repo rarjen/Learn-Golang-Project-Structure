@@ -31,6 +31,7 @@ type CreatedUserResponse struct {
 	ModifiedBy string `json:"modified_by"`
 }
 
+// Programs Response
 type CreatedProgramResponse struct {
 	IDProgram   int       `json:"id"`
 	ProgramName string    `json:"program_name"`
@@ -38,6 +39,14 @@ type CreatedProgramResponse struct {
 	CreatedBy   string    `json:"created_by"`
 	ModifiedBy  string    `json:"modified_by"`
 	CreatedTime time.Time `json:"created_time"`
+}
+
+type GetAllProgramsResponse struct {
+	IDProgram   int    `json:"id"`
+	ProgramName string `json:"program_name"`
+	IsActive    int    `json:"is_active"`
+	CreatedBy   string `json:"created_by"`
+	ModifiedBy  string `json:"modified_by"`
 }
 
 type UpdatedUserResponse struct {
