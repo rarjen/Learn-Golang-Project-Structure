@@ -9,6 +9,8 @@ import (
 type ProgramRepository interface {
 	CreateProgramRepo(ctx context.Context, data *entity.Program) (*entity.Program, error)
 	GetAllProgramsRepo(ctx context.Context) ([]entity.Program, error)
+	GetOneProgramById(ctx context.Context, id int) (entity.Program, error)
+	UpdateProgramRepo(ctx context.Context, data *entity.Program) (*entity.Program, error)
 }
 
 type programRepository struct {
@@ -35,7 +37,26 @@ func (repo *programRepository) GetAllProgramsRepo(ctx context.Context) ([]entity
 	var programs []entity.Program
 	err := repo.Datasource.GormDB.WithContext(ctx).Order("id_program desc").Find(&programs).Error
 	if err != nil {
-		return programs, err
+		return nil, nil
 	}
 	return programs, nil
+}
+
+func (repo *programRepository) GetOneProgramById(ctx context.Context, id int) (entity.Program, error) {
+	var program entity.Program
+	err := repo.Datasource.GormDB.WithContext(ctx).Where("id_program = ?", id).Find(&program).Error
+	if err != nil {
+		return program, err
+	}
+	return program, nil
+}
+
+func (repo *programRepository) UpdateProgramRepo(ctx context.Context, data *entity.Program) (*entity.Program, error) {
+
+	err := repo.Datasource.GormDB.WithContext(ctx).Model(&entity.Program{}).Where("id_program = ?", data.IDProgram).Updates(&data).Error
+	if err != nil {
+		return data, err
+	}
+
+	return data, nil
 }
