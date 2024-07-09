@@ -5,6 +5,8 @@ import "fmt"
 var (
 	ERR_PING = newError("err_ping")
 
+	ERR_INIT_NOT_FOUND = newError("err_init_not_found")
+
 	//USER
 	ERR_CREATE_USER    = newError("err_create_user")
 	ERR_UPDATE_USER    = newError("err_update_user")
@@ -14,6 +16,8 @@ var (
 	//PROGRAM
 	ERR_CREATE_PROGRAM   = newError("err_create_program")
 	ERR_GET_ALL_PROGRAMS = newError("err_get_all_programs")
+	ERR_GET_ONE_PROGRAM  = newError("err_get_one_program")
+	ERR_UPDATE_PROGRAM   = newError("err_update_program")
 )
 
 type Error struct {
