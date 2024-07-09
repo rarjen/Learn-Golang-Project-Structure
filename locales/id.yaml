@@ -4,3 +4,12 @@ err_ping_message: Gagal mengambil data pipeline di dalam database
 
 err_user_not_found_title: Data Tidak Ditemukan
 err_user_not_found_message: Data user tidak ditemukan
+
+err_init_not_found_title: Data Tidak Ditemukan
+err_init_not_found_message: Data tidak ditemukan
+
+err_update_program_title: Update Program
+err_update_program_message: Gagal update program
+
+err_get_one_program_title: Data Tidak Ditemukan
+err_get_one_program_message: Data program tidak ditemukan
