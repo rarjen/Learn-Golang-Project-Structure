@@ -58,6 +58,8 @@ func routeProgram(router *gin.Engine, controller controller.Controller) {
 	{
 		program.POST("/", controller.ProgramController.CreateProgram)
 		program.GET("/", controller.ProgramController.GetAllPrograms)
+		program.GET("/:id_program", controller.ProgramController.GetOneProgram)
+		program.PUT("/:id_program", controller.ProgramController.UpdateProgramById)
 	}
 
 }
