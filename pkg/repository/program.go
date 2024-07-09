@@ -11,6 +11,7 @@ type ProgramRepository interface {
 	GetAllProgramsRepo(ctx context.Context) ([]entity.Program, error)
 	GetOneProgramById(ctx context.Context, id int) (entity.Program, error)
 	UpdateProgramRepo(ctx context.Context, data *entity.Program) (*entity.Program, error)
+	DeleteProgramRepo(ctx context.Context, data *entity.Program) error
 }
 
 type programRepository struct {
@@ -57,6 +58,9 @@ func (repo *programRepository) UpdateProgramRepo(ctx context.Context, data *enti
 	if err != nil {
 		return data, err
 	}
-
 	return data, nil
+}
+
+func (repo *programRepository) DeleteProgramRepo(ctx context.Context, data *entity.Program) error {
+	return repo.Datasource.GormDB.WithContext(ctx).Delete(&data, data.IDProgram).Error
 }
