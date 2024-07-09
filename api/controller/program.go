@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"template-ulamm-backend-go/pkg/model/entity"
 	"template-ulamm-backend-go/pkg/model/request"
 	"template-ulamm-backend-go/pkg/model/response"
 	"template-ulamm-backend-go/pkg/usecase"
@@ -16,6 +17,7 @@ type ProgramController interface {
 	GetAllPrograms(ginCtx *gin.Context)
 	GetOneProgram(ginCtx *gin.Context)
 	UpdateProgramById(ginCtx *gin.Context)
+	DeleteProgram(ginCtx *gin.Context)
 }
 
 type programController struct {
@@ -110,4 +112,34 @@ func (controller *programController) UpdateProgramById(ginCtx *gin.Context) {
 		return
 	}
 	response.SuccessResponse(ginCtx, "success update program", resp)
+}
+
+func (controller *programController) DeleteProgram(ginCtx *gin.Context) {
+	ctx, cancel := context.WithTimeout(ginCtx, TIMEOUT)
+	defer cancel()
+
+	var req_id request.IdProgramRequest
+	if err := ginCtx.ShouldBindUri(&req_id); err != nil {
+		response.BadRequest(ginCtx, err)
+		return
+	}
+
+	// Check UserId
+	dataExist, err := controller.ProgramUsecase.GetOneProgramUsecase(ctx, req_id)
+	if err != nil {
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+
+	var program = &entity.Program{
+		IDProgram: dataExist.IDProgram,
+	}
+
+	resp, err := controller.ProgramUsecase.DeleteProgramUsecase(ctx, program)
+	if err != nil {
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+	response.SuccessResponse(ginCtx, "success delete program", resp)
+
 }
