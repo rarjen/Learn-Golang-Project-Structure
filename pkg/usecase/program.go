@@ -16,8 +16,9 @@ import (
 type ProgramUsecase interface {
 	CreateProgramUseCase(ctx context.Context, req request.CreateProgramRequest) (*response.CreatedProgramResponse, error)
 	GetAllProgramsUsecase(ctx context.Context) ([]response.GetAllProgramsResponse, error)
+	GetOneProgramUsecase(ctx context.Context, input request.IdProgramRequest) (*response.GetOneProgramResponse, error)
+	UpdateProgramUsecase(ctx context.Context, req request.UpdateProgramRequest, req_id request.IdProgramRequest) (*response.UpdatedProgramResponse, error)
 }
-
 type programUsecase struct {
 	repository repository.ProgramRepository
 }
@@ -69,7 +70,58 @@ func (u *programUsecase) GetAllProgramsUsecase(ctx context.Context) ([]response.
 			ModifiedBy:  program.ModifiedBy,
 		})
 	}
-
 	return responses, nil
+}
+
+func (u *programUsecase) GetOneProgramUsecase(ctx context.Context, input request.IdProgramRequest) (*response.GetOneProgramResponse, error) {
+
+	existingProgram, err := u.repository.GetOneProgramById(ctx, input.IDProgram)
+	if err != nil {
+		utils.GetLogger().Error("error get one program", zap.Error(err))
+		return nil, errs.ERR_GET_ONE_PROGRAM
+	}
+
+	if existingProgram.IDProgram == 0 {
+		utils.GetLogger().Error("program not found", zap.Error(err))
+		return nil, errs.ERR_INIT_NOT_FOUND
+	}
+
+	return &response.GetOneProgramResponse{
+		IDProgram:    existingProgram.IDProgram,
+		ProgramName:  existingProgram.ProgramName,
+		IsActive:     existingProgram.IsActive,
+		CreatedBy:    existingProgram.CreatedBy,
+		ModifiedBy:   existingProgram.ModifiedBy,
+		CreatedTime:  existingProgram.CreatedTime,
+		ModifiedTime: existingProgram.ModifiedTime,
+	}, nil
+
+}
+
+func (u *programUsecase) UpdateProgramUsecase(ctx context.Context, req request.UpdateProgramRequest, req_id request.IdProgramRequest) (*response.UpdatedProgramResponse, error) {
+
+	program := entity.Program{}
+
+	program.IDProgram = req_id.IDProgram
+	program.ProgramName = req.ProgramName
+	program.IsActive = req.IsActive
+	program.ModifiedBy = req.ModifiedBy
+	program.ModifiedTime = time.Now()
+
+	updatedProgram, err := u.repository.UpdateProgramRepo(ctx, &program)
+	if err != nil {
+		utils.GetLogger().Error("error update program", zap.Error(err))
+		return nil, errs.ERR_UPDATE_PROGRAM
+	}
+
+	return &response.UpdatedProgramResponse{
+		IDProgram:    updatedProgram.IDProgram,
+		ProgramName:  updatedProgram.ProgramName,
+		IsActive:     updatedProgram.IsActive,
+		ModifiedBy:   updatedProgram.ModifiedBy,
+		ModifiedTime: updatedProgram.ModifiedTime,
+		CreatedTime:  updatedProgram.CreatedTime,
+		CreatedBy:    updatedProgram.CreatedBy,
+	}, nil
 
 }
