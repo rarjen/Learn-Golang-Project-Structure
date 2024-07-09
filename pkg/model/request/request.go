@@ -62,8 +62,18 @@ type CreateProgramRequest struct {
 	CreatedTime time.Time `json:"created_time"`
 }
 
+type UpdateProgramRequest struct {
+	ProgramName string `json:"program_name" validate:"required"`
+	IsActive    int    `json:"is_active" validate:"required"`
+	ModifiedBy  string `json:"modified_by" validate:"required"`
+}
+
 type GetIdUserRequest struct {
 	IDEmployee string `uri:"id_employee" binding:"required"`
+}
+
+type IdProgramRequest struct {
+	IDProgram int `uri:"id_program" binding:"required"`
 }
 
 type UpdateUserRequest struct {
