@@ -18,6 +18,7 @@ type ProgramUsecase interface {
 	GetAllProgramsUsecase(ctx context.Context) ([]response.GetAllProgramsResponse, error)
 	GetOneProgramUsecase(ctx context.Context, input request.IdProgramRequest) (*response.GetOneProgramResponse, error)
 	UpdateProgramUsecase(ctx context.Context, req request.UpdateProgramRequest, req_id request.IdProgramRequest) (*response.UpdatedProgramResponse, error)
+	DeleteProgramUsecase(ctx context.Context, data *entity.Program) (int, error)
 }
 type programUsecase struct {
 	repository repository.ProgramRepository
@@ -123,5 +124,14 @@ func (u *programUsecase) UpdateProgramUsecase(ctx context.Context, req request.U
 		CreatedTime:  updatedProgram.CreatedTime,
 		CreatedBy:    updatedProgram.CreatedBy,
 	}, nil
+}
 
+func (u *programUsecase) DeleteProgramUsecase(ctx context.Context, data *entity.Program) (int, error) {
+
+	err := u.repository.DeleteProgramRepo(ctx, data)
+	if err != nil {
+		return 0, err
+	}
+
+	return 1, nil
 }
