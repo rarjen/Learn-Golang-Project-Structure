@@ -41,6 +41,26 @@ type CreatedProgramResponse struct {
 	CreatedTime time.Time `json:"created_time"`
 }
 
+type GetOneProgramResponse struct {
+	IDProgram    int       `json:"id"`
+	ProgramName  string    `json:"program_name"`
+	IsActive     int       `json:"is_active"`
+	CreatedBy    string    `json:"created_by"`
+	ModifiedBy   string    `json:"modified_by"`
+	CreatedTime  time.Time `json:"created_time"`
+	ModifiedTime time.Time `json:"modified_time"`
+}
+
+type UpdatedProgramResponse struct {
+	IDProgram    int       `json:"id"`
+	ProgramName  string    `json:"program_name"`
+	IsActive     int       `json:"is_active"`
+	CreatedBy    string    `json:"created_by"`
+	ModifiedBy   string    `json:"modified_by"`
+	CreatedTime  time.Time `json:"created_time"`
+	ModifiedTime time.Time `json:"modified_time"`
+}
+
 type GetAllProgramsResponse struct {
 	IDProgram   int    `json:"id"`
 	ProgramName string `json:"program_name"`
@@ -59,11 +79,30 @@ type UpdatedUserResponse struct {
 	ModifiedBy string `json:"modified_by"`
 }
 
+type UpdateProgramResponse struct {
+	IDProgram    int       `json:"id"`
+	ProgramName  string    `json:"program_name"`
+	IsActive     int       `json:"is_active"`
+	CreatedBy    string    `json:"created_by"`
+	CreatedTime  time.Time `json:"created_time"`
+	ModifiedBy   string    `json:"modified_by"`
+	ModifiedTime time.Time `json:"modified_time"`
+}
+
 func SuccessResponse(ctx *gin.Context, message string, data interface{}) {
 	ctx.JSON(http.StatusOK, Response{
 		Message: &message,
 		Data:    data,
 	})
+}
+
+func NotFound(ctx *gin.Context, message string) {
+
+	ctx.JSON(http.StatusNotFound, Response{
+		Message: &message,
+		Data:    nil,
+	})
+
 }
 
 func BadRequest(ctx *gin.Context, err error) {
