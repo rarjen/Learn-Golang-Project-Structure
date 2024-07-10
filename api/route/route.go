@@ -75,6 +75,7 @@ func routeProduct(router *gin.Engine, controller controller.Controller) {
 		program.GET("/:id_product", controller.ProductController.GetOneProduct)
 		program.PUT("/:id_product", controller.ProductController.UpdateProduct)
 		program.POST("/", controller.ProductController.CreateProduct)
+		program.DELETE("/:id_product", controller.ProductController.DeleteProduct)
 	}
 }
 
