@@ -19,6 +19,7 @@ type ProductUsecase interface {
 	GetOneProduct(ctx context.Context, id int) (*response.GetAllProductsResponse, error)
 	CreateProduct(ctx context.Context, data request.CreateProductRequest) (*response.GetAllProductsResponse, error)
 	UpdateProduct(ctx context.Context, reqBody request.CreateProductRequest, id int) (*entity.Product, error)
+	DeleteProduct(ctx context.Context, id int) (int, error)
 }
 
 type productUsecase struct {
@@ -148,4 +149,13 @@ func (pu *productUsecase) UpdateProduct(ctx context.Context, reqBody request.Cre
 	}
 
 	return updatedProduct, nil
+}
+
+func (pu *productUsecase) DeleteProduct(ctx context.Context, id int) (int, error) {
+	err := pu.repository.DeleteProduct(ctx, id)
+	if err != nil {
+		utils.GetLogger().Error("failed delete product", zap.Error(err))
+		return 0, errs.ERR_DELETE_PRODUCT
+	}
+	return 1, nil
 }
