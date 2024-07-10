@@ -69,6 +69,23 @@ type GetAllProgramsResponse struct {
 	ModifiedBy  string `json:"modified_by"`
 }
 
+type GetAllProductsResponse struct {
+	IDProduct          int       `json:"id"`
+	ProductName        string    `json:"product_name"`
+	ProductCode        string    `json:"product_code"`
+	InterestRate       float64   `json:"interest_rate"`
+	InterestRateAnnual float64   `json:"interest_rate_annual"`
+	LimitLoanLower     float64   `json:"limit_loan_lower"`
+	LimitLoanUpper     float64   `json:"limit_loan_upper"`
+	TimePeriodLower    int       `json:"time_period_lower"`
+	TimePeriodUpper    int       `json:"time_period_upper"`
+	IsActive           int       `json:"is_active"`
+	CreatedBy          string    `json:"created_by"`
+	CreatedTime        time.Time `json:"created_time"`
+	ModifiedBy         string    `json:"modified_by"`
+	ModifiedTime       time.Time `json:"modified_time"`
+}
+
 type UpdatedUserResponse struct {
 	ID         string `json:"id"`
 	IDEmployee string `json:"id_employee"`
