@@ -11,4 +11,5 @@ type Controller struct {
 	UserController    interface{ UserController }
 	CityController    interface{ CityController }
 	ProgramController interface{ ProgramController }
+	ProductController interface{ ProductController }
 }
