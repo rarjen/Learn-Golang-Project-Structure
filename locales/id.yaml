@@ -16,3 +16,6 @@ err_get_one_program_message: Data program tidak ditemukan
 
 err_create_product_title: Create Data
 err_create_product_message: Gagal membuat data
+
+err_update_product_title: Update Data
+err_update_product_message: Gagal update data
