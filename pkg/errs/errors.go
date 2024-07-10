@@ -18,6 +18,9 @@ var (
 	ERR_GET_ALL_PROGRAMS = newError("err_get_all_programs")
 	ERR_GET_ONE_PROGRAM  = newError("err_get_one_program")
 	ERR_UPDATE_PROGRAM   = newError("err_update_program")
+
+	//PRODUCT
+	ERR_CREATE_PRODUCT = newError("err_create_product")
 )
 
 type Error struct {

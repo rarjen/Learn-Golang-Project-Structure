@@ -55,6 +55,22 @@ type CreateUserRequest struct {
 	ModifiedTime time.Time `json:"modified_time"`
 }
 
+type CreateProductRequest struct {
+	ProductName        string    `json:"product_name" validate:"required"`
+	ProductCode        string    `json:"product_code" validate:"required"`
+	InterestRate       float64   `json:"interest_rate" validate:"required"`
+	InterestRateAnnual float64   `json:"interest_rate_annual" validate:"required"`
+	LimitLoanLower     float64   `json:"limit_loan_lower" validate:"required"`
+	LimitLoanUpper     float64   `json:"limit_loan_upper" validate:"required"`
+	TimePeriodLower    int       `json:"time_period_lower" validate:"required"`
+	TimePeriodUpper    int       `json:"time_period_upper" validate:"required"`
+	IsActive           int       `json:"is_active" validate:"required"`
+	CreatedBy          string    `json:"created_by" validate:"required"`
+	CreatedTime        time.Time `json:"created_time"`
+	ModifiedBy         string    `json:"modified_by"`
+	ModifiedTime       time.Time `json:"modified_time"`
+}
+
 type CreateProgramRequest struct {
 	ProgramName string    `json:"program_name" validate:"required"`
 	IsActive    int       `json:"is_active" validate:"required"`
@@ -74,6 +90,10 @@ type GetIdUserRequest struct {
 
 type IdProgramRequest struct {
 	IDProgram int `uri:"id_program" binding:"required"`
+}
+
+type IdProductParam struct {
+	IDProduct int `uri:"id_product" binding:"required"`
 }
 
 type UpdateUserRequest struct {
