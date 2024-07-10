@@ -34,6 +34,9 @@ func NewServer(controller controller.Controller) *gin.Engine {
 	// Route Program
 	routeProgram(router, controller)
 
+	// Route Product
+	routeProduct(router, controller)
+
 	// Route Swagger
 	routeSwagger(router)
 
@@ -63,6 +66,15 @@ func routeProgram(router *gin.Engine, controller controller.Controller) {
 		program.DELETE("/:id_program", controller.ProgramController.DeleteProgram)
 	}
 
+}
+
+func routeProduct(router *gin.Engine, controller controller.Controller) {
+	program := router.Group("/products")
+	{
+		program.GET("/", controller.ProductController.GetAllProducts)
+		program.GET("/:id_product", controller.ProductController.GetOneProduct)
+		program.POST("/", controller.ProductController.CreateProduct)
+	}
 }
 
 func routeCity(router *gin.Engine, controller controller.Controller) {
