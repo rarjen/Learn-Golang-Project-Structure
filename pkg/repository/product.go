@@ -10,6 +10,7 @@ type ProductRepository interface {
 	GetAllProducts(ctx context.Context) ([]*entity.Product, error)
 	GetOneProduct(ctx context.Context, id int) (*entity.Product, error)
 	CreateProduct(ctx context.Context, data *entity.Product) (*entity.Product, error)
+	UpdateProduct(ctx context.Context, reqBody *entity.Product, id int) (*entity.Product, error)
 }
 
 type productRepository struct {
@@ -46,4 +47,12 @@ func (pr *productRepository) CreateProduct(ctx context.Context, data *entity.Pro
 		return nil, err
 	}
 	return data, nil
+}
+
+func (pr *productRepository) UpdateProduct(ctx context.Context, reqBody *entity.Product, id int) (*entity.Product, error) {
+	err := pr.Datasource.GormDB.WithContext(ctx).Model(&entity.Product{}).Where("id_product = ?", id).Updates(&reqBody).Error
+	if err != nil {
+		return nil, err
+	}
+	return reqBody, nil
 }

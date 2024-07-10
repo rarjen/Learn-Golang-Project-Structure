@@ -65,7 +65,7 @@ type CreateProductRequest struct {
 	TimePeriodLower    int       `json:"time_period_lower" validate:"required"`
 	TimePeriodUpper    int       `json:"time_period_upper" validate:"required"`
 	IsActive           int       `json:"is_active" validate:"required"`
-	CreatedBy          string    `json:"created_by" validate:"required"`
+	CreatedBy          string    `json:"created_by"`
 	CreatedTime        time.Time `json:"created_time"`
 	ModifiedBy         string    `json:"modified_by"`
 	ModifiedTime       time.Time `json:"modified_time"`
