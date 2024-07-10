@@ -16,6 +16,7 @@ type ProductController interface {
 	GetOneProduct(ginCtx *gin.Context)
 	CreateProduct(ginCtx *gin.Context)
 	UpdateProduct(ginCtx *gin.Context)
+	DeleteProduct(ginCtx *gin.Context)
 }
 
 type productController struct {
@@ -122,4 +123,34 @@ func (pc *productController) UpdateProduct(ginCtx *gin.Context) {
 	}
 
 	response.SuccessResponse(ginCtx, "success update product", updatedProduct)
+}
+
+func (pc *productController) DeleteProduct(ginCtx *gin.Context) {
+	ctx, cancel := context.WithTimeout(ginCtx, TIMEOUT)
+	defer cancel()
+	var req request.IdProductParam
+	if err := ginCtx.ShouldBindUri(&req); err != nil {
+		response.BadRequest(ginCtx, err)
+		return
+	}
+
+	productExist, err := pc.ProductUsecase.GetOneProduct(ctx, req.IDProduct)
+	if err != nil {
+		utils.GetLogger().Error("failed validate request", zap.Error(err))
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+
+	if productExist.IDProduct == 0 {
+		utils.GetLogger().Error("Data not found")
+		response.NotFound(ginCtx, "Data not found")
+		return
+	}
+
+	_, err = pc.ProductUsecase.DeleteProduct(ctx, req.IDProduct)
+	if err != nil {
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+	response.SuccessResponse(ginCtx, "success delete product", 1)
 }
