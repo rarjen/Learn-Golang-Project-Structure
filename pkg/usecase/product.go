@@ -18,6 +18,7 @@ type ProductUsecase interface {
 	GetAllProducts(ctx context.Context) ([]*response.GetAllProductsResponse, error)
 	GetOneProduct(ctx context.Context, id int) (*response.GetAllProductsResponse, error)
 	CreateProduct(ctx context.Context, data request.CreateProductRequest) (*response.GetAllProductsResponse, error)
+	UpdateProduct(ctx context.Context, reqBody request.CreateProductRequest, id int) (*entity.Product, error)
 }
 
 type productUsecase struct {
@@ -122,4 +123,29 @@ func (pu *productUsecase) CreateProduct(ctx context.Context, data request.Create
 		ModifiedBy:         createdProduct.ModifiedBy,
 		ModifiedTime:       createdProduct.ModifiedTime,
 	}, nil
+}
+
+func (pu *productUsecase) UpdateProduct(ctx context.Context, reqBody request.CreateProductRequest, id int) (*entity.Product, error) {
+
+	product := entity.Product{
+		ProductName:        reqBody.ProductName,
+		ProductCode:        reqBody.ProductCode,
+		InterestRate:       reqBody.InterestRate,
+		InterestRateAnnual: reqBody.InterestRateAnnual,
+		LimitLoanLower:     reqBody.LimitLoanLower,
+		LimitLoanUpper:     reqBody.LimitLoanUpper,
+		TimePeriodLower:    reqBody.TimePeriodLower,
+		TimePeriodUpper:    reqBody.TimePeriodUpper,
+		IsActive:           reqBody.IsActive,
+		ModifiedBy:         reqBody.ModifiedBy,
+		ModifiedTime:       time.Now(),
+	}
+
+	updatedProduct, err := pu.repository.UpdateProduct(ctx, &product, id)
+	if err != nil {
+		utils.GetLogger().Error("failed update product", zap.Error(err))
+		return nil, errs.ERR_UPDATE_PRODUCT
+	}
+
+	return updatedProduct, nil
 }
