@@ -134,14 +134,8 @@ func (pc *productController) DeleteProduct(ginCtx *gin.Context) {
 		return
 	}
 
-	productExist, err := pc.ProductUsecase.GetOneProduct(ctx, req.IDProduct)
+	_, err := pc.ProductUsecase.GetOneProduct(ctx, req.IDProduct)
 	if err != nil {
-		utils.GetLogger().Error("failed validate request", zap.Error(err))
-		response.FailedResponse(ginCtx, err)
-		return
-	}
-
-	if productExist.IDProduct == 0 {
 		utils.GetLogger().Error("Data not found")
 		response.NotFound(ginCtx, "Data not found")
 		return
