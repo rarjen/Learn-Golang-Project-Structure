@@ -15,6 +15,7 @@ type ProductController interface {
 	GetAllProducts(ginCtx *gin.Context)
 	GetOneProduct(ginCtx *gin.Context)
 	CreateProduct(ginCtx *gin.Context)
+	UpdateProduct(ginCtx *gin.Context)
 }
 
 type productController struct {
@@ -75,4 +76,50 @@ func (pc *productController) CreateProduct(ginCtx *gin.Context) {
 		return
 	}
 	response.SuccessResponse(ginCtx, "success create product", resp)
+}
+
+func (pc *productController) UpdateProduct(ginCtx *gin.Context) {
+	ctx, cancel := context.WithTimeout(ginCtx, TIMEOUT)
+	defer cancel()
+
+	var req request.IdProductParam
+	if err := ginCtx.ShouldBindUri(&req); err != nil {
+		response.BadRequest(ginCtx, err)
+		return
+	}
+
+	productExist, err := pc.ProductUsecase.GetOneProduct(ctx, req.IDProduct)
+	if err != nil {
+		utils.GetLogger().Error("failed validate request", zap.Error(err))
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+
+	if productExist.IDProduct == 0 {
+		utils.GetLogger().Error("Data not found")
+		response.NotFound(ginCtx, "Data not found")
+		return
+	}
+
+	var reqBody request.CreateProductRequest
+	if err := request.ValidateRequest(ginCtx, &reqBody); err != nil {
+		utils.GetLogger().Error("failed validate request", zap.Error(err))
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+
+	_, err = pc.ProductUsecase.UpdateProduct(ctx, reqBody, req.IDProduct)
+	if err != nil {
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+
+	updatedProduct, err := pc.ProductUsecase.GetOneProduct(ctx, req.IDProduct)
+	if err != nil {
+		utils.GetLogger().Error("failed validate request", zap.Error(err))
+		response.FailedResponse(ginCtx, err)
+		return
+	}
+
+	response.SuccessResponse(ginCtx, "success update product", updatedProduct)
 }
