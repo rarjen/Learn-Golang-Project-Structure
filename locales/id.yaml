@@ -13,3 +13,6 @@ err_update_program_message: Gagal update program
 
 err_get_one_program_title: Data Tidak Ditemukan
 err_get_one_program_message: Data program tidak ditemukan
+
+err_create_product_title: Create Data
+err_create_product_message: Gagal membuat data
