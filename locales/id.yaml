@@ -19,3 +19,6 @@ err_create_product_message: Gagal membuat data
 
 err_update_product_title: Update Data
 err_update_product_message: Gagal update data
+
+err_delete_product_title: Delete Data
+err_delete_product_message: Gagal delete data
