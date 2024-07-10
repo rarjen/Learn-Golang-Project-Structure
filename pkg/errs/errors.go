@@ -21,6 +21,7 @@ var (
 
 	//PRODUCT
 	ERR_CREATE_PRODUCT = newError("err_create_product")
+	ERR_UPDATE_PRODUCT = newError("err_update_product")
 )
 
 type Error struct {
